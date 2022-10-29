@@ -1,11 +1,9 @@
 import Element
 def WebSite:
 
-    _homepage
-
     def __init__(self, host):
         """È il costruttore della classe WebSite. Crea un nuovo oggetto WebSite per salvare il WebSite dell'host."""
-        _homepage = Element()
+        homepage = Element()
         pass
 
     def __isDir(self, elem):
