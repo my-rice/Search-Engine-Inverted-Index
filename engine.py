@@ -1,4 +1,4 @@
-def SearchEngine:
+class SearchEngine:
 
     def __init__(self, namedir):
         """Inizializza il motore di ricerca. Prende in input una directory (namedir) nel quale ci sono molti file ognuno dei quali rappresenta una differente webpage. 

@@ -1,4 +1,4 @@
-def InvertedIndex:
+class InvertedIndex:
     """ Questa classe implementa un dizionario che memorizza coppie di chiave-valore (w,L). 
         Le chiavi del dizionario sono chiamate index terms. Sono un set di entry di un vocabulary e nomi propri lunghi il più possibile.
         I valori del dizionario sono chiamati occurence lists. Essi contengono quante pagine Web possono contenere.

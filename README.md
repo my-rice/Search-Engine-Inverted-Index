@@ -1,5 +1,5 @@
 ## DAA_midterm_project
-#midterm project of Design and Analysis of Algorythm
+midterm project of Design and Analysis of Algorythm
 1) We need a data structure to organizes websites, where a website is defined by a
 structured collection of webpages that reside at the same host: e.g., www.unisa.it/index.html
 and www.unisa.it/diem/daa.html are pages of the same website, since they are on the same

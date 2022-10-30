@@ -1,5 +1,5 @@
 import Element
-def WebSite:
+class WebSite:
 
     def __init__(self, host):
         """È il costruttore della classe WebSite. Crea un nuovo oggetto WebSite per salvare il WebSite dell'host."""
@@ -10,6 +10,7 @@ def WebSite:
         pass
 
     def __isPage(self, elem):
+        pass
 
     def __hasDir(self, ndir, cdir):
         pass
