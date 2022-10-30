@@ -1,28 +1,33 @@
-import Element
+from Element import Element
+
 class WebSite:
 
     def __init__(self, host):
         """È il costruttore della classe WebSite. Crea un nuovo oggetto WebSite per salvare il WebSite dell'host."""
-        homepage = Element()
-        pass
+        self.homeDirectory = Element(host)    
 
     def __isDir(self, elem):
-        pass
+        return elem.isDir()
 
     def __isPage(self, elem):
-        pass
+        return elem.isPage()
 
     def __hasDir(self, ndir, cdir):
-        pass
-
+        return cdir.searchInChildren(ndir,True)
+            
     def __newDir(self, ndir, cdir):
-        pass
+        if(not cdir.__isDir()):
+            raise Exception(cdir,"is not a directory")
+        return cdir.addDir(ndir)
+        
 
     def __hasPage(self, npag, cdir):
-        pass
+        return cdir.searchInChildren(npag,False)
 
     def __newPage(self, npag, cdir):
-        pass
+        if(not cdir.__isDir()):
+            raise Exception(cdir,"is not a directory")
+        return cdir.addPage(npag,"")
 
     def getHomePage(self):
         """Restituisce l'home page del website al quale l'oggetto corrente si riferisce. Oppure lancia un eccezione se l'homepage non esiste"""
@@ -30,7 +35,6 @@ class WebSite:
 
     def getSiteString(self):
         """Restituisce una stringa che mostra la struttura del website. (La stringa è formattata in un certo modo)."""
-
         pass
 
     def insertPage(self, url, content):
