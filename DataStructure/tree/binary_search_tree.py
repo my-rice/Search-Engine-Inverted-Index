@@ -1,5 +1,5 @@
 from .linked_binary_tree import LinkedBinaryTree
-from .map_base import MapBase
+from ..map_base import MapBase
 
 class TreeMap(LinkedBinaryTree, MapBase):
   """Sorted map implementation using a binary search tree."""
@@ -128,6 +128,9 @@ class TreeMap(LinkedBinaryTree, MapBase):
         return
       else:
         item = self._Item(k,v)
+        
+        print("CI SONOOOOO: ",p.key," ",k)
+        
         if p.key() < k:
           leaf = self._add_right(p, item)        # inherited from LinkedBinaryTree
         else:
