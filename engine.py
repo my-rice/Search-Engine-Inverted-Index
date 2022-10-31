@@ -1,11 +1,20 @@
 class SearchEngine:
 
     def __init__(self, namedir):
-        """Inizializza il motore di ricerca. Prende in input una directory (namedir) nel quale ci sono molti file ognuno dei quali rappresenta una differente webpage. 
-            Ogni file contiene: nella prima riga l'URL (incluso l'hostname); in tutte le altre righe il contenuto della webpage. 
-            Questa funzione popola il database del motore di ricerca, inizializzando e inserendo i valori nelle strutture dati necessarie.
+        """ 
+            Inizializza il motore di ricerca. Prende in input una directory (namedir) 
+            nel quale ci sono molti file ognuno dei quali rappresenta una differente webpage. 
+            Ogni file contiene: nella prima riga l'URL (incluso l'hostname); 
+            in tutte le altre righe il contenuto della webpage. 
+            Questa funzione popola il database del motore di ricerca, 
+            inizializzando e inserendo i valori nelle strutture dati necessarie.
         """
         """Nel nostro caso prende in input la cartella "dataset" e popola tutte le necessarie strutture dati."""
+        
+        """ ES: prende www.uniba.it/1zz.html crea il website www.uniba.it ed aggiunge la pagina 1zz.html con il suo contenuto
+            
+        """ 
+
         pass
 
     def search(self, keyword, k):
