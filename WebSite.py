@@ -1,4 +1,3 @@
-from tkinter import N
 from Element import Element
 
 class WebSite:
@@ -24,8 +23,9 @@ class WebSite:
     def __newDir(self, ndir, cdir):
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
-        return cdir.addElement(self,dir=True,name=ndir)
-        
+        e = cdir.addElement(self,dir=True,name=ndir) #O(1)
+        cdir.updateOrder(e) #O(k)
+        return e
 
     def __hasPage(self, npag, cdir):
         """
@@ -38,7 +38,9 @@ class WebSite:
     def __newPage(self, npag, cdir):
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
-        return cdir.addElement(self,dir=False,name=npag,content="")
+        e = cdir.addElement(self,dir=False,name=npag,content="") #O(1)
+        cdir.updateOrder(e) #O(k)
+        return e
 
     def getHomePage(self):
         """ 
@@ -51,14 +53,17 @@ class WebSite:
 
     def getSiteString(self):
         """Restituisce una stringa che mostra la struttura del website. (La stringa è formattata in un certo modo)."""
-        pass
+        return  self._homeDirectory.getWebSiteStructure("")
+
 
     def insertPage(self, url, content):
-        """ Salva e restituisce la nuova pagina del website. 
-        URL: è una stringa che rappresenta l'URL della pagina.
-        content: è una stringa che rappresenta il testo contenuto nella pagina.
+        """ 
+            Salva e restituisce la nuova pagina del website. 
+            URL: è una stringa che rappresenta l'URL della pagina.
+            content: è una stringa che rappresenta il testo contenuto nella pagina.
         """
         x = url.split("/")
+        #TODO: provare ad usare has directory!
         if x[0] != self._homeDirectory.getName():
             raise Exception("This WebPage doesn't belong to this website")
         e = self._homeDirectory
@@ -68,9 +73,7 @@ class WebSite:
         #Fuori dal for avrò l'Element che rappresenta la directory dove devo inserire la Page
         p = self.__newPage(npag = x[-1], cdir=e)
         p.setContent(content)
-
         return p
-        #TODO: Manca l'aggiornare la seconda struttura dati da mettere
          
 
     def getSiteFromPage(self, page):

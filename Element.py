@@ -1,4 +1,6 @@
+from ast import Str
 from HashTable.chain_hash_map import ChainHashMap 
+from HashTable.sorted_table_map import SortedTableMap
 class Element:
     """Questa classe gestisce sia le directory che le webpage"""
 
@@ -8,8 +10,10 @@ class Element:
         self._dir = dir
         if(dir): #è una directory
             self._HTchildren = ChainHashMap() #Questa hashtable mi permette di riferirmi al contenuto della directory
+            self._orderedChildren = SortedTableMap() #Questa struttura dati permette di conservare l'ordine dei riferimenti dei figli delle directory
         else: #è una webpage
             self._HTchildren = None
+            self._orderedChildren = None
             self._content = content   
               
     def isDir(self):
@@ -23,6 +27,8 @@ class Element:
         return self._content
     def getWebSite(self):
         return self._webSite
+    def getOrderedChildren(self):
+        return self._orderedChildren
     def setContent(self,content):
         self._content = content
     
@@ -49,15 +55,35 @@ class Element:
         else:
             raise Exception("The element is not a directory")
 
+    def updateOrder(self,elem):
+        """
+            Aggiunde elem alla struttura dati ordinata della directory parent di elem. 
+            elem può essere sia un WebPage che una Directory.
+        """
+        if(not self.isDir):
+            raise Exception("I am not a directory")
+        self._orderedChildren[elem.getName()] = elem
     
 
-    #SOLO PER TEST PERSONALI. DA CANCELLARE!!
-    def __str__(self):
-        if(self.isDir()):
-            return self.getName()
-        else:
-            return self.getName() + ": " + self.getContent()
+    def getWebSiteStructure(self,l) -> str:
+        if(self == None):
+            return ""
+        if(self.isDir() and l == ""):
+            s = self.getName()+"\n"
+            for i in self.getOrderedChildren():
+                s+= self._HTchildren[i].getWebSiteStructure("---")
+            return s    
+        if(self.isDir() and l != ""):
+            s = l + " "+self.getName() + "\n"
+            l += "---"
+            for i in self.getOrderedChildren():
+                s+= self._HTchildren[i].getWebSiteStructure(l)
+            return s
+        if(self.isWebPage()):
+            return l + " "+self.getName() + "\n"
 
-    
 
+    def __str__(self) -> str:
+        return self.getName()
+        
 
