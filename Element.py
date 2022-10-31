@@ -1,6 +1,5 @@
-from ast import Str
-from DataStructure.chain_hash_map import ChainHashMap 
-from DataStructure.sorted_table_map import SortedTableMap
+from dataStructure.chain_hash_map import ChainHashMap 
+from dataStructure.tree.red_black_tree import RedBlackTreeMap
 class Element:
     """Questa classe gestisce sia le directory che le webpage"""
 
@@ -10,7 +9,7 @@ class Element:
         self._dir = dir
         if(dir): #è una directory
             self._HTchildren = ChainHashMap() #Questa hashtable mi permette di riferirmi al contenuto della directory
-            self._orderedChildren = SortedTableMap() #Questa struttura dati permette di conservare l'ordine dei riferimenti dei figli delle directory
+            self._orderedChildren = RedBlackTreeMap() #Questa struttura dati permette di conservare l'ordine dei riferimenti dei figli delle directory
         else: #è una webpage
             self._HTchildren = None
             self._orderedChildren = None

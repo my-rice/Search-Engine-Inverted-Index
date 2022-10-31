@@ -1,4 +1,4 @@
-from Element import Element
+from element import Element
 
 class WebSite:
 

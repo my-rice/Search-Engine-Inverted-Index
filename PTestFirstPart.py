@@ -1,5 +1,5 @@
-from Element import Element
-from WebSite import WebSite
+from element import Element
+from webSite import WebSite
 
 
 print("Testing Element methods")
