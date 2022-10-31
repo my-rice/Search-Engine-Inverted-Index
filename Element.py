@@ -1,6 +1,6 @@
 from ast import Str
-from HashTable.chain_hash_map import ChainHashMap 
-from HashTable.sorted_table_map import SortedTableMap
+from DataStructure.chain_hash_map import ChainHashMap 
+from DataStructure.sorted_table_map import SortedTableMap
 class Element:
     """Questa classe gestisce sia le directory che le webpage"""
 
