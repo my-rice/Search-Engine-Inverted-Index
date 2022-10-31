@@ -1,3 +1,4 @@
+from tkinter import N
 from Element import Element
 
 class WebSite:
@@ -62,7 +63,8 @@ class WebSite:
             raise Exception("This WebPage doesn't belong to this website")
         e = self._homeDirectory
         for i in range(1,len(x)-1): #Da 1 a n-1 www.unisa.it/diem/profs/vinci.html -> n = 4 -> da 1 a 2. 1)diem 2)profs
-            e = self.__hasDir(ndir=x[i],cdir=e)
+            #e = self.__hasDir(ndir=x[i],cdir=e) #Qui controllo solo che la directory ci sia altrimenti lancia un'eccezione
+            e = self.__newDir(ndir=x[i],cdir=e)
         #Fuori dal for avrò l'Element che rappresenta la directory dove devo inserire la Page
         p = self.__newPage(npag = x[-1], cdir=e)
         p.setContent(content)
