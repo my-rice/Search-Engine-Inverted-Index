@@ -38,7 +38,7 @@ class Element:
 
     def searchInChildren(self,elemName,dir):
         """Se sono una cartella controllo che elem sia uno dei miei figli. Poi controllo se è una WebPage o una directory"""
-        print(elemName," ",dir)
+        #print(elemName," ",dir)
         if(self.isDir()):
             e = self._HTchildren[elemName] #Lancia già un eccezione se l'elemento non esiste
             if(e.isDir() == dir): #Controllo che se gli ho chiesto una Webpage l'elemento e sia una Webpage
