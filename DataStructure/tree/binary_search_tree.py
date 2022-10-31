@@ -128,9 +128,6 @@ class TreeMap(LinkedBinaryTree, MapBase):
         return
       else:
         item = self._Item(k,v)
-        
-        print("CI SONOOOOO: ",p.key," ",k)
-        
         if p.key() < k:
           leaf = self._add_right(p, item)        # inherited from LinkedBinaryTree
         else:
