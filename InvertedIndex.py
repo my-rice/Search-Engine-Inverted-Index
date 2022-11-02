@@ -1,5 +1,6 @@
 from dataStructure.tree.red_black_tree import RedBlackTreeMap
-from dataStructure.hash_table.chain_hash_map import ChainHashMap
+#from dataStructure.hash_table.chain_hash_map import ChainHashMap
+from dataStructure.hash_table.probe_hash_map import ProbeHashMap
 class OLItem:
     def __init__(self,page,num):
         self._page=page
@@ -80,7 +81,9 @@ class InvertedIndex:
     """
     def __init__(self):
         """Crea un nuovo oggetto InvertedIndex"""
-        self._InvertedIndex = ChainHashMap()
+        #self._InvertedIndex = ChainHashMap()
+        self._InvertedIndex = ProbeHashMap()
+        #self._InvertedIndex = {}
 
     def addWord(self, keyword):
         """Aggiunge la stringa keyword nell'InvertedIndex"""
@@ -92,7 +95,7 @@ class InvertedIndex:
             Se la parola non è presente essa viene inserita nell'InvertedIndex e la pagina viene inserita nell'OccurrenceList.
             Inoltre, viene aggiornato numero di occorrenze della parola nella pagina nell'occurrence list.
         """
-        words = page.getContent().split(" ") #Complessità è O(n = lunghezza testo pagina) ????? Forse è ottimizzata?
+        words = page.getContent().split() #Complessità è O(n = lunghezza testo pagina) ????? Forse è ottimizzata?
         for w in words:
             if w not in self._InvertedIndex.keys():
                 self.addWord(w)
@@ -107,6 +110,7 @@ class InvertedIndex:
         """Prende in input la stringa keyword e restituisce la corrispondente occurence list. 
            Lancia un'eccezione se non c'è una occurence list associata alla stringa keyword
         """
+        #TODO: ECCEZIONE
         return self._InvertedIndex[keyword]
 
     

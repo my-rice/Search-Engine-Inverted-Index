@@ -29,7 +29,7 @@ class SearchEngine:
             content = fp.read()
             fp.close()
             
-            wb = url.split("/")[0]
+            wb = url.partition("/")[0]
             if wb not in self._websites.keys():
                 self._websites[wb] = WebSite(wb)
             page = self._websites[wb].insertPage(url,content)
