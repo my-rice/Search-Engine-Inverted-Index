@@ -24,7 +24,7 @@ class WebSite:
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
         e = cdir.addElement(self,dir=True,name=ndir) #O(1)
-        cdir.updateOrder(e) #O(k)
+        cdir.updateOrder(e) #O(log(k))
         return e
 
     def __hasPage(self, npag, cdir):
@@ -39,7 +39,7 @@ class WebSite:
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
         e = cdir.addElement(self,dir=False,name=npag,content="") #O(1)
-        cdir.updateOrder(e) #O(k)
+        cdir.updateOrder(e) #O(log(k))
         return e
 
     def getHomePage(self):
@@ -81,3 +81,7 @@ class WebSite:
         if(not self.__isPage(page)):
             raise Exception("The parameter is not a WebPage")
         return page.getWebSite()
+
+    
+    def getWebSiteName(self):
+        return self._homeDirectory.getName()

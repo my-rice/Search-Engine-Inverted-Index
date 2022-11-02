@@ -9,8 +9,8 @@ OUT_2="www.unica.it\n--- 1zz.html\n--- aaa.html\n--- diem\n------ daa.html\n----
 start = time()
 se=SearchEngine(DIR)
 
-out1=search("algorithm", 5)
-out2=search("design", 10)
+out1=se.search("algorithm", 5)
+out2=se.search("design", 10)
 end=time()-start
 if out1 != OUT_1:
     print("FAIL")
@@ -19,3 +19,10 @@ elif out2 != OUT_2:
 else:
     print("True")
     print(end)
+
+###DEBUG
+# print("\n****FINE\n****")
+# print("OUT_1")
+# print(OUT_1)
+# print("OUT_2")
+# print(OUT_2)

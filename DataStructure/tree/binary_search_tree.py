@@ -1,5 +1,5 @@
 from .linked_binary_tree import LinkedBinaryTree
-from ..map_base import MapBase
+from ..hash_table.map_base import MapBase
 
 class TreeMap(LinkedBinaryTree, MapBase):
   """Sorted map implementation using a binary search tree."""
@@ -15,11 +15,34 @@ class TreeMap(LinkedBinaryTree, MapBase):
       return self.element()._value
 
   #------------------------------- nonpublic utilities -------------------------------
+  def _lt(self,key1,key2):
+    if (not isinstance(key1, str)) or (not isinstance(key2, str)):
+      raise Exception("key1",str(key1),"key2",str(key2),"or key2 is not a string")
+      
+    for i in range(min(len(key1),len(key2))):
+        
+      if(key1[i] == key2[i]): #Se i caratteri sono uguali
+        continue
+
+      #Se ENTRAMBI i caratteri NON sono lettere maiuscole oppure ENTRAMBI i caratteri sono lettere MAIUSCOLE
+      if ((key1[i] < 'A' or key1[i] > 'Z') and (key2[i] < 'A' or key2[i] > 'Z')) or ((key1[i] >= 'A' and key1[i] <= 'Z') and (key2[i] >= 'A' and key2[i] <= 'Z')): 
+        return key1[i]<key2[i]
+      #Se UNO solo dei due caratteri è maiuscolo
+      if (key1[i] >= 'A' and key1[i] <= 'Z'): #Se il primo carattere è Maiuscolo
+        return False
+      else:
+        return True
+    if len(key1)<len(key2):
+      return True
+    return False
+
+
+
   def _subtree_search(self, p, k):
     """Return Position of p's subtree having key k, or last node searched."""
     if k == p.key():                                   # found match
       return p
-    elif k < p.key():                                  # search left subtree
+    elif self._lt(k, p.key()):                                  # search left subtree
       if self.left(p) is not None:
         return self._subtree_search(self.left(p), k)
     else:                                              # search right subtree
@@ -128,7 +151,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
         return
       else:
         item = self._Item(k,v)
-        if p.key() < k:
+        if self._lt(p.key(), k):
           leaf = self._add_right(p, item)        # inherited from LinkedBinaryTree
         else:
           leaf = self._add_left(p, item)         # inherited from LinkedBinaryTree
@@ -184,7 +207,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
       return None
     else:
       p = self.find_position(k)
-      if k < p.key():
+      if self._lt(k, p.key()):
         p = self.before(p)
       return (p.key(), p.value()) if p is not None else None
 
@@ -197,7 +220,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
       return None
     else:
       p = self.find_position(k)
-      if not p.key() < k:
+      if not self._lt(p.key(), k):
         p = self.before(p)
       return (p.key(), p.value()) if p is not None else None
 
@@ -210,7 +233,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
       return None
     else:
       p = self.find_position(k)                   # may not find exact match
-      if p.key() < k:                             # p's key is too small
+      if self._lt(p.key(), k):                             # p's key is too small
         p = self.after(p)
       return (p.key(), p.value()) if p is not None else None
 
@@ -223,7 +246,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
       return None
     else:
       p = self.find_position(k)
-      if not k < p.key():
+      if not self._lt(k, p.key()):
         p = self.after(p)
       return (p.key(), p.value()) if p is not None else None
 
@@ -239,7 +262,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
       else:
         # we initialize p with logic similar to find_ge
         p = self.find_position(start)
-        if p.key() < start:
+        if self._lt(p.key(), start):
           p = self.after(p)
       while p is not None and (stop is None or p.key() < stop):
         yield (p.key(), p.value())

@@ -1,4 +1,4 @@
-from dataStructure.chain_hash_map import ChainHashMap 
+from dataStructure.hash_table.chain_hash_map import ChainHashMap 
 from dataStructure.tree.red_black_tree import RedBlackTreeMap
 #from dataStructure.sorted_table_map import SortedTableMap
 class Element:
@@ -70,18 +70,18 @@ class Element:
         if(self == None):
             return ""
         if(self.isDir() and l == ""):
-            s = self.getName()+"\n"
+            s = self.getName()
             for i in self.getOrderedChildren():
                 s+= self._HTchildren[i].getWebSiteStructure("---")
             return s    
         if(self.isDir() and l != ""):
-            s = l + " "+self.getName() + "\n"
+            s = "\n" + l + " "+self.getName()
             l += "---"
             for i in self.getOrderedChildren():
                 s+= self._HTchildren[i].getWebSiteStructure(l)
             return s
         if(self.isWebPage()):
-            return l + " "+self.getName() + "\n"
+            return "\n" + l + " "+self.getName()
 
 
     def __str__(self) -> str:
