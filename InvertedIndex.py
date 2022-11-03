@@ -1,6 +1,7 @@
 from dataStructure.tree.red_black_tree import RedBlackTreeMap
 #from dataStructure.hash_table.chain_hash_map import ChainHashMap
 from dataStructure.hash_table.probe_hash_map import ProbeHashMap
+
 class OLItem:
     def __init__(self,page,num):
         self._page=page
@@ -22,6 +23,7 @@ class OccurenceList:
     
     def __init__(self):
         self._data = RedBlackTreeMap()
+        
     def add(self,page):
         """
             Provo ad aggiornare il numero di occorrenze se non esiste
@@ -31,22 +33,23 @@ class OccurenceList:
         #print("[OccurenceList]: type di page:",type(page))
         #print("[OccurenceList]: id page:",id(page))
         
+        key = str(id(page))
         try:
             ###DEBUG
             #print("[OccurenceList] Sono:", id(self)," provo il try di",page.getName(),"con id:",id(page))
-
-            x = self._data[str(id(page))]
+            
+            x = self._data[key]
 
             ###DEBUG
             #print("[OccurenceList]:",page.getName(),"sono nel try con",str(x))
 
-            self._data[str(id(page))]._num = x._num+1
+            self._data[key]._num = x._num+1
         except:
             ###DEBUG
             #print("[OccurenceList]: try fallito.",page.getName()," è in except")
 
             item = OLItem(page,1)
-            self._data[str(id(page))] = item
+            self._data[key] = item
         
         """
         if str(id(page)) in self._data.keys():

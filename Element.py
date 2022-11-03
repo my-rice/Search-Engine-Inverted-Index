@@ -9,9 +9,9 @@ class Element:
         self._webSite = webSite 
         self._name = name
         self._dir = dir
-        if(dir): #è una directory
+        if(self._dir): #è una directory
             self._HTchildren = ProbeHashMap()
-            
+
             #self._HTchildren = ChainHashMap() #Questa hashtable mi permette di riferirmi al contenuto della directory
             self._orderedChildren = RedBlackTreeMap() #Questa struttura dati permette di conservare l'ordine dei riferimenti dei figli delle directory
             #self._orderedChildren = SortedTableMap()
@@ -50,14 +50,16 @@ class Element:
         """Se sono una cartella controllo che elem sia uno dei miei figli. Poi controllo se è una WebPage o una directory"""
         #print(elemName," ",dir)
         if(self.isDir()):
-            e = self._HTchildren[elemName] #Lancia già un eccezione se l'elemento non esiste
-            if(e.isDir() == dir): #Controllo che se gli ho chiesto una Webpage l'elemento e sia una Webpage
-                                  #Se invece ho chiesto un directory l'elemento sia una directory
+            try:
+                e = self._HTchildren[elemName] #Lancia già un'eccezione se l'elemento non esiste
+            except:
+                raise ValueError("The element does not exist")
+            if(e.isDir() == dir): #Verifico che l'elemento richiesto sia una Webpage, se si sta cercando una WebPage, oppure che sia una directory, se si sta cercando una directory.
                 return e
             else:
-                raise Exception("The element exists but it is not a WebPage/Directory")
+                raise ValueError("The element exists but it is not a WebPage/Directory")
         else:
-            raise Exception("The element is not a directory")
+            raise ValueError("The element is not a directory")
 
     def updateOrder(self,elem):
         """
@@ -65,7 +67,7 @@ class Element:
             elem può essere sia un WebPage che una Directory.
         """
         if(not self.isDir):
-            raise Exception("I am not a directory")
+            raise ValueError("I am not a directory")
         self._orderedChildren[elem.getName()] = elem
     
 

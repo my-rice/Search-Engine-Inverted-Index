@@ -4,7 +4,7 @@ from webSite import WebSite
 
 print("Testing Element methods")
 ws = WebSite("www.unisa.it")
-#page = ws.getHomePage()
+page = ws.getHomePage()
 #print(page)
 #print(ws.getSiteFromPage(page))
 ws.insertPage(url="www.unisa.it/aaa.html",content="Questa è la page del diem")

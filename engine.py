@@ -18,6 +18,7 @@ class SearchEngine:
         """ ES: prende www.uniba.it/1zz.html crea il website www.uniba.it ed aggiunge la pagina 1zz.html con il suo contenuto
             
         """ 
+        #TODO: cambiare il dizionario
         self._websites = {}
         self._invIndex = InvertedIndex()
         for file in os.scandir(namedir):
