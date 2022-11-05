@@ -1,7 +1,13 @@
 from element import Element
 
-class WebSite:
 
+class PageDoesNotBelongToThisWebSiteError(Exception):
+    pass
+
+class WebSite:
+    """"""
+
+    #__slots__ = '_homeDirectory'
     def __init__(self, host):
         """È il costruttore della classe WebSite. Crea un nuovo oggetto WebSite per salvare il WebSite dell'host."""
         self._homeDirectory = Element(self,dir=True,name=host)    
@@ -23,8 +29,8 @@ class WebSite:
     def __newDir(self, ndir, cdir):
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
-        e = cdir.addElement(self,dir=True,name=ndir) #O(1)
-        cdir.updateOrder(e) #O(log(k))
+        e = cdir.addElement(self,dir=True,name=ndir) #O(log(k))
+        
         return e
 
     def __hasPage(self, npag, cdir):
@@ -38,8 +44,7 @@ class WebSite:
     def __newPage(self, npag, cdir):
         if(not self.__isDir(cdir)):
             raise Exception(cdir,"is not a directory")
-        e = cdir.addElement(self,dir=False,name=npag,content="") #O(1)
-        cdir.updateOrder(e) #O(log(k))
+        e = cdir.addElement(self,dir=False,name=npag,content="") #O(log(k))
         return e
 
     def getHomePage(self):
@@ -65,7 +70,7 @@ class WebSite:
         x = url.split("/")
         #TODO: provare ad usare has directory!
         if x[0] != self._homeDirectory.getName():
-            raise Exception("This WebPage doesn't belong to this website")
+            raise PageDoesNotBelongToThisWebSiteError("This WebPage doesn't belong to this website")
         e = self._homeDirectory
         for i in range(1,len(x)-1): #Da 1 a n-1 www.unisa.it/diem/profs/vinci.html -> n = 4 -> da 1 a 2. 1)diem 2)profs
             #e = self.__hasDir(ndir=x[i],cdir=e) #Qui controllo solo che la directory ci sia altrimenti lancia un'eccezione
@@ -84,4 +89,5 @@ class WebSite:
 
     
     def getWebSiteName(self):
+        """Il metodo restituisce il nome della home directory del WebSite"""
         return self._homeDirectory.getName()

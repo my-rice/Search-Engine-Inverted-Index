@@ -22,7 +22,11 @@ else:
 
 ###DEBUG
 # print("\n****FINE\n****")
-# print("OUT_1")
+# print("out_1 risultato: ")
+# print(out1)
+# print("OUT_1 isultato corretto: ")
 # print(OUT_1)
-# print("OUT_2")
+# print("out_2 risultato: ")
+# print(out2)
+# print("OUT_2 isultato corretto: ")
 # print(OUT_2)

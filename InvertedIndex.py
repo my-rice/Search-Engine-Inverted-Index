@@ -1,8 +1,13 @@
-from dataStructure.tree.red_black_tree import RedBlackTreeMap
+#from dataStructure.tree.red_black_tree import RedBlackTreeMap
 #from dataStructure.hash_table.chain_hash_map import ChainHashMap
 from dataStructure.hash_table.probe_hash_map import ProbeHashMap
 
+class KeywordNotInInvertedIndexError(Exception):
+    pass
+
 class OLItem:
+    """"""
+    __slots__ = '_page','_num'
     def __init__(self,page,num):
         self._page=page
         self._num=num
@@ -17,13 +22,19 @@ class OLItem:
 class OccurenceList:
     """ 
         Questa versione di OccurenceList è basata su una mappa ed è implementata tramite un albero.
-        La chiave è il la stringa del riferimento alla WebPage mentre il valore è il numero di occorrenze della keyword all'interno 
+        La chiave è il riferimento (convertito in stringa) alla WebPage mentre il valore è il numero di occorrenze della keyword all'interno 
         della WebPage (il cui riferimento è utilizzato come chiave)
     """
+
+    __slots__ = '_data'
     
     def __init__(self):
-        self._data = RedBlackTreeMap()
-        
+        ### v1
+        #self._data = RedBlackTreeMap()
+        ### v2
+        self._data = ProbeHashMap()
+        ### vBest
+        #self._data = {}
     def add(self,page):
         """
             Provo ad aggiornare il numero di occorrenze se non esiste
@@ -60,6 +71,8 @@ class OccurenceList:
             self._data[str(id(page))] = 1
             #print("sono nell'else -> ",self._data[page])
         """
+    def getData(self):
+        return self._data
         
     
     def __str__(self):
@@ -76,16 +89,23 @@ class OccurenceList:
 
 
 class InvertedIndex:
-    """ Questa classe implementa un dizionario che memorizza coppie di chiave-valore (w,L). 
+    """ 
+        La classe InvertedIndex implementa un dizionario che memorizza coppie di chiave-valore (w,L). 
         Le chiavi del dizionario sono chiamate index terms. Sono un set di entry di un vocabulary e nomi propri lunghi il più possibile.
         I valori del dizionario sono chiamati occurence lists. Essi contengono quante pagine Web possono contenere.
         In realtà le vere occurence list sono oggetti separati. In questa classe verranno memeorizzati SOLO i riferimenti a questi oggetti occurence list.
         Nota: L'occurrence list memorizza anche il numero di occorrenze della parola nella pagina.
     """
+
+    __slots__ = '_InvertedIndex'
+
     def __init__(self):
-        """Crea un nuovo oggetto InvertedIndex"""
+        """Instanzia un nuovo oggetto della classe InvertedIndex"""
+        ### v1
         #self._InvertedIndex = ChainHashMap()
+        ### v2
         self._InvertedIndex = ProbeHashMap()
+        ### vBest
         #self._InvertedIndex = {}
 
     def addWord(self, keyword):
@@ -100,20 +120,32 @@ class InvertedIndex:
         """
         words = page.getContent().split() #Complessità è O(n = lunghezza testo pagina) ????? Forse è ottimizzata?
         for w in words:
-            if w not in self._InvertedIndex.keys():
+
+            ### v1
+            #if w not in self._InvertedIndex.keys():
+            #    self.addWord(w)
+            #self._InvertedIndex[w].add(page)
+
+            #Si aggiunge la pagina della parola w alle Occurence List. Se w non è mai stati inserito in _InvertedIndex, deve essere inserito.
+            try:
+                self._InvertedIndex[w].add(page)
+            except:
                 self.addWord(w)
-            
+                self._InvertedIndex[w].add(page)
+
             ###DEBUG
             #print("[InvertedIndex: addPage] word:",w," page:",page.getName())
-            
-            self._InvertedIndex[w].add(page)
         
 
     def getList(self, keyword):
-        """Prende in input la stringa keyword e restituisce la corrispondente occurence list. 
-           Lancia un'eccezione se non c'è una occurence list associata alla stringa keyword
         """
-        #TODO: ECCEZIONE
-        return self._InvertedIndex[keyword]
+            Il metodo getList prende in input una stringa, la keyword, e restituisce la corrispondente occurence list. 
+            Viene lanciata l'eccezione KeywordNotInInvertedIndexError se non esiste una occurence list associata alla stringa keyword.
+        """
+        try:
+            return self._InvertedIndex[keyword]
+        except KeyError:
+            raise KeywordNotInInvertedIndexError("The keyword "+keyword+" does not exist in the InvertedIndex")
+        
 
     
