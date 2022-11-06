@@ -5,7 +5,7 @@ from dataStructure.tree.red_black_tree import RedBlackTreeMap
 
 class DirectoryNotFoundError(Exception):
     pass
-class NonExistenceElementError(Exception):
+class NonExistentElementError(Exception):
     pass
 class WrongElementError(Exception):
     pass
@@ -29,7 +29,6 @@ class Element:
             #self._HTchildren = {}
 
             self._orderedChildren = RedBlackTreeMap() #Questa struttura dati permette di conservare l'ordine dei riferimenti dei figli delle directory
-            #self._orderedChildren = SortedTableMap()
 
             self._content = None
         else: #è una webpage
@@ -70,8 +69,28 @@ class Element:
         if(self.isDir()):
             try:
                 e = self._HTchildren[elemName] #Lancia già un'eccezione se l'elemento non esiste
+            except KeyError:
+                raise NonExistentElementError("The element does not exist")
             except:
-                raise NonExistenceElementError("The element does not exist")
+                raise Exception("A problem occurred in the class searchInChildren ")
+            if(e.isDir() == dir): #Si verifica che l'elemento richiesto sia una Webpage, se si sta cercando una WebPage, oppure che sia una directory, se si sta cercando una directory.
+                return e
+            else:
+                raise WrongElementError("The element exists but it is not a WebPage (if I requested a WebPage) or it is not a directory (if I requested a directory)")
+        else:
+            raise NotADirectoryError("The element is not a directory")
+
+    def searchInOrderedChildren(self,elemName,dir):
+        """Se sono una cartella controllo che elem sia uno dei miei figli nella struttura dati ordinata. Poi controllo se è una WebPage o una directory"""
+        if(self.isDir()):
+            try:
+                e = self._orderedChildren[elemName] #Lancia un'eccezione se elemName non esiste
+            except KeyError:
+                raise NonExistentElementError("The element does not exist")
+            except:
+                raise Exception("A problem occurred in the class searchInOrderedChildren ")
+            
+            
             if(e.isDir() == dir): #Si verifica che l'elemento richiesto sia una Webpage, se si sta cercando una WebPage, oppure che sia una directory, se si sta cercando una directory.
                 return e
             else:
@@ -89,25 +108,47 @@ class Element:
         self._orderedChildren[elem.getName()] = elem
     
 
+    # def getWebSiteStructure(self,l) -> str:
+    #     """Metodo ricorsivo che restituisce una stringa che rappresenta la struttura del website.
+    #         l'HomeDirectory è caratterizzato dal fatto che è una directory ed ha l = ""
+    #     """
+    #     #if(self == None):
+    #     #    return ""
+    #     if(self.isDir() and l == ""): #Caso particolare in cui self è l'homeDirectory: 
+    #         s = self.getName()
+    #         for i in self.getOrderedChildren():
+    #             s+= self._HTchildren[i].getWebSiteStructure("---")
+    #         return s    
+    #     if(self.isDir() and l != ""): #Caso in cui self è una directory ma non è l'homeDirectory 
+    #         s = "\n" + l + " "+self.getName()
+    #         l += "---"
+    #         for i in self.getOrderedChildren():
+    #             s+= self._HTchildren[i].getWebSiteStructure(l)
+    #         return s
+    #     if(self.isWebPage()): #Caso in cui self è una WebPage
+    #         return "\n" + l + " "+self.getName()
+
     def getWebSiteStructure(self,l) -> str:
-        if(self == None):
-            return ""
-        if(self.isDir() and l == ""):
+        """Metodo ricorsivo che restituisce una stringa che rappresenta la struttura del website.
+            l'HomeDirectory è caratterizzato dal fatto che è una directory ed ha l = ""
+        """
+        #if(self == None):
+        #    return ""
+        if(self.isDir() and l == ""): #Caso particolare in cui self è l'homeDirectory: 
             s = self.getName()
-            for i in self.getOrderedChildren():
-                s+= self._HTchildren[i].getWebSiteStructure("---")
+            for (k,v) in self.getOrderedChildren().items():
+                s += v.getWebSiteStructure("---")
             return s    
-        if(self.isDir() and l != ""):
+        if(self.isDir() and l != ""): #Caso in cui self è una directory ma non è l'homeDirectory 
             s = "\n" + l + " "+self.getName()
             l += "---"
-            for i in self.getOrderedChildren():
-                s+= self._HTchildren[i].getWebSiteStructure(l)
+            for (k,v) in self.getOrderedChildren().items():
+                s += v.getWebSiteStructure(l)
             return s
-        if(self.isWebPage()):
+        if(self.isWebPage()): #Caso in cui self è una WebPage
             return "\n" + l + " "+self.getName()
 
 
     def __str__(self):
         return self.getName()
         
-

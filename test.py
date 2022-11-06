@@ -18,15 +18,18 @@ elif out2 != OUT_2:
     print("FAIL")
 else:
     print("True")
-    print(end)
+    print(end) 
 
 ###DEBUG
+# print(se.search("preservo",3))
+# print(se.search("mela",3))
+# s = "www.unica.it\n--- 1zz.html\n--- aaa.html\n--- diem\n------ daa.html\n------ profs\n--------- auletta.html\n--------- ferraioli.html\n--------- vinci.html\n--- index.html\n--- AAAA.html"
 # print("\n****FINE\n****")
 # print("out_1 risultato: ")
 # print(out1)
-# print("OUT_1 isultato corretto: ")
+# print("OUT_1 risultato corretto: ")
 # print(OUT_1)
 # print("out_2 risultato: ")
 # print(out2)
-# print("OUT_2 isultato corretto: ")
+# print("OUT_2 risultato corretto: ")
 # print(OUT_2)

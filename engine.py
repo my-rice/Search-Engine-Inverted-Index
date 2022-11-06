@@ -9,8 +9,6 @@ class NotEnoughOccurencesError(Exception):
     pass
 
 class SearchEngine:
-    """"""
-
     __slots__ = '_websites','_invIndex'
     def __init__(self, namedir):
         """ 
@@ -20,8 +18,9 @@ class SearchEngine:
         """
         self._websites = ProbeHashMap() # _websites memorizza tutti i website creati affinchè NON vengano istanziati più di una volta  
         self._invIndex = InvertedIndex()
-        for file in os.scandir(namedir):
-            
+        
+        #Per inizializzare le strutture dati 
+        for file in os.scandir(namedir):    
             if not file.is_file() or file.name.startswith('.'):
                 continue
             fp = open(file,'r')
@@ -83,10 +82,16 @@ class SearchEngine:
         #    return l[0]
         # array.sort(key=sort_key,reverse=True)
 
-        ###DEBUG:
+        ###DEBUG v1:
+        # print("ARRAY:")
+        # for e in array:
+        #     print(e[0]," ",e[1].getWebSiteName())
+
+        ###DEBUG v2:
         #print("ARRAY:")
-        #for e in array:
-        #    print(e[0]," ",e[1].getWebSiteName())
+        #for e in array._data:
+        #    print(e._key," ",e._value.getWebSiteName())
+
 
         websites = []
         s = ""
