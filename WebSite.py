@@ -105,8 +105,8 @@ class WebSite:
             L'homepage è una webpage speciale chiamata index.html contenuta nella home directory.
         """
 
-        if(self.homePage == None):
-            raise HomePageDoesNotExistError("The HomePage of ",self.getWebSiteName," does not exist")
+        if(self._homePage == None):
+            raise HomePageDoesNotExistError("The HomePage of ",self.getWebSiteName()," does not exist")
         else:
             return self._homePage
 
@@ -136,7 +136,7 @@ class WebSite:
         p = self.__newPage(npag = x[-1], cdir=e)
         p.setContent(content)
         if x[1] == "index.html":
-            self._homePage = e
+            self._homePage = p
         return p
          
     @staticmethod

@@ -1,25 +1,25 @@
 from dataStructure.hash_table.probe_hash_map import ProbeHashMap
-
+from dataStructure.trie.standardTrie import StandardTrie
 class KeywordNotInInvertedIndexError(Exception):
     pass
 
 class OLItem:
     """La classe OLItem rappresenta ciò che viene memorizzato nell'Occurence List."""
-    __slots__ = '_page','_num'
+    __slots__ = '_page','num'
     def __init__(self,page,num):
         self._page=page
-        self._num=num
+        self.num=num
     def __str__(self):
-        return self._page.getName() + " " + str(self._num)
+        return self._page.getName() + " " + str(self.num)
     def getPage(self):
         return self._page
     def getNum(self):
-        return self._num
+        return self.num
 
 
 class OccurenceList:
     """ 
-        La classe OccurenceList è basata su una mappa ed è implementata tramite un HashTable.
+        La classe OccurenceList è basata su una mappa.
         La chiave è il riferimento (convertito in stringa) alla WebPage mentre il valore è il numero di occorrenze della keyword all'interno 
         della WebPage (il cui riferimento è utilizzato come chiave)
     """
@@ -27,8 +27,7 @@ class OccurenceList:
     
     def __init__(self):
         self._data = ProbeHashMap()
-        ### vBest
-        #self._data = {}
+
     def add(self,page):
         """
             Il metodo add aggiunge la WebPage nell'Occurence List ed aggiorna il numero di occorrenze.
@@ -38,8 +37,8 @@ class OccurenceList:
         #print("[OccurenceList]: type di page:",type(page))
         #print("[OccurenceList]: id page:",id(page))
         
+        key = id(page)
 
-        key = str(id(page))
         try:
             ###DEBUG
             #print("[OccurenceList] Sono:", id(self)," provo il try di",page.getName(),"con id:",id(page))
@@ -49,7 +48,7 @@ class OccurenceList:
             ###DEBUG
             #print("[OccurenceList]:",page.getName(),"sono nel try con",str(x))
 
-            self._data[key]._num = x._num+1
+            self._data[key].num = x.num+1
         except:
             ###DEBUG
             #print("[OccurenceList]: try fallito.",page.getName()," è in except")
@@ -95,9 +94,7 @@ class InvertedIndex:
     def __init__(self):
         """È il costruttore della classe InvertedIndex. Instanzia un nuovo oggetto InvertedIndex"""
 
-        self._InvertedIndex = ProbeHashMap(cap=127937) #Mi aspetto che ci siano molte parole
-        ### vBest
-        #self._InvertedIndex = {}
+        self._InvertedIndex = ProbeHashMap(cap=2000) #Il cap è fissato a 2000 perchè mi aspetto che si siano molte parole nel dataset
 
     def addWord(self, keyword):
         """Il metodo addWord aggiunge la stringa keyword all'interno della struttura dati InvertedIndex"""
@@ -120,11 +117,21 @@ class InvertedIndex:
 
             #Si aggiunge la pagina che contiene la parola w all'Occurence List.
             #Se w è una keyword che non è mai stata inserita prima in _InvertedIndex, deve essere prima inserita e poi va aggiunta la pagina.
-            try:
-                self._InvertedIndex[w].add(page)
-            except:
-                self.addWord(w)
-                self._InvertedIndex[w].add(page)
+            
+            #Versione ottimizzazione per l'accesso alle HashTable
+            res = self._InvertedIndex.myGetSetNone(w) #res = (found,valore)
+            if not res[0]: #Se found è true, il valore è un item
+                o = OccurenceList()
+                self._InvertedIndex.mySet(res[1],o)  #Vado ad inserire l'OccurenceList appena creata
+                o.add(page)
+            else: #Se found è false, il valore è un OccurenceList
+                res[1].add(page)
+
+            # try:
+            #     self._InvertedIndex[w].add(page)
+            # except:
+            #     self.addWord(w)
+            #     self._InvertedIndex[w].add(page)
 
             ###DEBUG
             #print("[InvertedIndex: addPage] word:",w," page:",page.getName())

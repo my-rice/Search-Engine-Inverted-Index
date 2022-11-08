@@ -50,5 +50,6 @@ class TestWebSite(unittest.TestCase):
     def test_get_homepage(self):
         w = WebSite("www.unisa.it")
         self.assertRaises(Exception, lambda: w.getHomePage())
-        w.insertPage("www.unisa.it/index.html","qwerty")
+        print(w.insertPage("www.unisa.it/index.html","qwerty").getName())
+        print(w.getHomePage().getName())
         self.assertEqual(w.getHomePage().getContent(), "qwerty")

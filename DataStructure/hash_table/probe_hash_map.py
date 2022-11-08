@@ -50,3 +50,24 @@ class ProbeHashMap(HashMapBase):
     for j in range(len(self._table)):                # scan entire table
       if not self._is_available(j):
         yield self._table[j]._key
+
+
+  def myGetSetNone(self,k):
+    j = self._hash_function(k)
+    found, s = self._find_slot(j, k)
+    if not found:
+      i = self._Item(k,None)  
+      self._table[s] = i           
+      self._n += 1
+      if self._n > len(self._table) // 2:           # keep load factor <= 0.5
+        self._resize(2 * len(self._table) - 1)
+        j = self._hash_function(k)
+        found, s = self._find_slot(j, k)
+        found = False
+        i = self._table[s]
+      return (found, i)                                
+    return (found, self._table[s]._value)
+    
+
+  def mySet(self,i,value):
+    i._value = value

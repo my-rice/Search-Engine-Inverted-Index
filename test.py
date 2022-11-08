@@ -20,8 +20,11 @@ else:
     print("True")
     print(end) 
 
-###DEBUG
-# print(se.search("preservo",3))
+###DEBUG 
+#print(se.search("preservo",3))
+#print(se.search("design",10))
+#print(se.search("ciao",2))
+#print(se.search("aristotele",2))
 # print(se.search("mela",3))
 # s = "www.unica.it\n--- 1zz.html\n--- aaa.html\n--- diem\n------ daa.html\n------ profs\n--------- auletta.html\n--------- ferraioli.html\n--------- vinci.html\n--- index.html\n--- AAAA.html"
 # print("\n****FINE\n****")
