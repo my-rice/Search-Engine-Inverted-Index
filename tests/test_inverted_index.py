@@ -1,7 +1,7 @@
 import unittest
-from webSite import WebSite
-from invertedIndex import InvertedIndex
-
+from webSite import WebSite,NotAnElementError
+from invertedIndex import InvertedIndex,KeywordNotInInvertedIndexError
+from element import Element
 class TestInvertedIndex(unittest.TestCase):
     lorem_ipsum1 = """soci abbreviano concernano significo reciti nuotarono conserve signorino esaminerei abbatti abbatti ritardato ritardassi abbreviero tappereste constatati declinaste decisi obliare celebrando soffierai spazzavo recitativo sifoni orafe obliassero spruzzerei recito lavagne restie rovista attuai indole adattammo recitava individuare celebrata recitativo design spiegato taglino rinviamo celebrano esasperato imitano obliare conserva sigaretta risultino armassero spiedi attuabile adagiavate ritagliavo generica concedere sorpresa risultino trasalirai tagliata spruzzati conservati lambisco tappava declinaste optiate curveremmo ricoverare ricavate abbatti soccombei abbatto destinera morbida cremereste adattassi armassero considerazioni tapperemo esaminerei ora restituzione considerando fondai abbatti obliassero indizi armassero soffierai professori spiedi ritagliavo lambisco spiegai destinato obl attuassimo montoni sigillasse curverei soffierai destinavo trottano latte nomine adattai armerebbe indomabile consegnero adatti consegnera silenti soffiato declinerei morboso geni conservati legavano spiegando celebrando considerando declinaste curvasse consegnera affettando abbozzo soffierai smettila abbatti adagiavate risultiamo declinerei opzione morbida addensano morbida concedo spiegai trottando imitaste lambivamo spruzzavi studiano imburrava destinera sensati recitativo spiegato nuoteremo ritardato restie imitaste ritardiate trarla professori curvasse obesit armassero obl imitano attuai restituito abbatti spruzzavi attuali ritardato legassi soffiavate spiegato signora nuotarono geni adagio tappavano ritardano adattai attuassimo attuai rovino attuali geni sigillato sorpresa recitativo trotterete imbuto geni scandali rinvenito considerate spazzo montone attuati rinviasse spazzavo affettare spruzzavi scandire conserva rinviasse proficui scandali sigill lattante restituii stuccavano soccomba soffierai rinviasse fodere rinvenito sigillai ritardata obliassero spruzzavi spiedi fodere roviner generici soccombei pendemmo trasalimmo soffierai morbida pendei cremaste ritardata attuati curvasse destinera curvasse lavanderie considerando soffierai celebraste consegnera legassi fodere attuava celebrata proficui tappava smacchiai spiegai soffierai ricavate armerebbe lambiva attuali ritarda spruzzerei abbreviero mora legavi monti soffiarono declinaste proficui attuassimo nomine geni ricotte obliassero ritardano sigaretta consentita cremaste spruzzerei ritardati sifoni smacco celebrando celebraste cremaste ricavate professori rinvenito lambivi trasalisca rinviasse morbida ritagliai imburrato smettono armeremo attuali professori soccomba detenere indomabili legasse declinaste lamentai celebraste attuassimo smacco professori spruzzavi obl consueta ritardato trasaliva ritardammo spiegando sifoni recitativo spazziate sigari trottava ritagliai concederla conservava soccombei reciterei fodero genererei spruzzavi silicio abbatti sifoni restie
 lambivamo spiegando penderebbe lavande ritaglio spudorate spiedi celate armerebbe generino orbita ritagliai imitaste addensasti rinviasse bizzarre imitaste smagliammo ritardammo scandire restituiti adagiavi smacchiai lambita cremavi nuoterei concerei lavagne ritardammo spazzolata consegnera spiegato declinaste spruzzati profili spiegando tagliate spiegai tapperete curvasse stuccavano consente cremeresti siero lambiva ritaglio mora bisognerebbe scapita ritardammo imburrava adattai reciter obliare attuabile opzioni attuai imitaste legarono senapa legassi leggeranno spruzzerai more fodere geni morda curvasse sorpassavo spazzavo attuammo soccombei celebrate adiposo adatti restie ritagliai ricoverato celebrata concera imitaste attuati montoni fodere destino legata attuai armassi imburrava fodererei spruzzavi smacco ritardata ricattavo lambivi ritardammo smacco mora sifoni legava attuabile spruzzerei tappereste celassimo sigillasse attuassimo lame reclama concernere conseguenza bisticciai studiassi attuammo
@@ -102,14 +102,38 @@ adeguano oblii digradano scolorano scardino eccitiamo digrada snoderei scalavate
         for page in p:
             inverted_index.addPage(page)
 
-        for k,v in inverted_index._InvertedIndex["triturando"].getData().items():
-            print(k," ",v)
+        #for k,v in inverted_index._InvertedIndex["triturando"].getData().items():
+            #print(k," ",v)
         occurrence_list = inverted_index.getList("triturando")
         for key, value in occurrence_list.getData().items():
-            print("\n"+key, value)
-            print(value.getNum())
+        #    print("\n"+str(key), value)
+        #    print(value.getNum())
             self.assertEqual(value.getNum(), 22)
-    
+        
+        #Se passo una directory
+        self.assertRaises(Exception,lambda: inverted_index.addPage(Element(w,True,"diem")))
+        #Se passo qualcosa che non è page
+        self.assertRaises(NotAnElementError,lambda: inverted_index.addPage("String"))
+        
+
+    def test_add_word(self):
+        w = WebSite("www.unisa.it")
+        p = []
+        p.append(w.insertPage("www.unisa.it/test/index.html",TestInvertedIndex.lorem_ipsum1))
+        p.append(w.insertPage("www.unisa.it/1zz.html",TestInvertedIndex.lorem_ipsum2))
+        p.append(w.insertPage("www.unisa.it/diem/profs/auletta.html",TestInvertedIndex.lorem_ipsum3))
+        p.append(w.insertPage("www.unisa.it/diem/profs/vinci.html",TestInvertedIndex.lorem_ipsum1))
+        p.append(w.insertPage("www.unisa.it/index.html",TestInvertedIndex.lorem_ipsum2))
+        p.append(w.insertPage("www.unisa.it/diem/profs/ferraioli.html",TestInvertedIndex.lorem_ipsum3))
+        p.append(w.insertPage("www.unisa.it/diem/daa.html",TestInvertedIndex.lorem_ipsum1))
+        p.append(w.insertPage("www.unisa.it/AAAA.html",TestInvertedIndex.lorem_ipsum2))
+        p.append(w.insertPage("www.unisa.it/aaa.html",TestInvertedIndex.lorem_ipsum3))
+        inverted_index = InvertedIndex()
+        for page in p:
+            words = page.getContent().split() #Complessità è O(n = lunghezza testo pagina)
+            for w in words:
+               inverted_index.addWord(w) 
+
     def test_get_list(self):
         w = WebSite("www.unisa.it")
         p = []
@@ -127,9 +151,9 @@ adeguano oblii digradano scolorano scardino eccitiamo digrada snoderei scalavate
         for page in p:
             inverted_index.addPage(page)
             
-        self.assertRaises(Exception, lambda: inverted_index.getList("opopomoz"))
-        self.assertRaises(Exception, lambda: inverted_index.getList("zattera"))
-        self.assertRaises(Exception, lambda: inverted_index.getList("pterodattilo"))
+        self.assertRaises(KeywordNotInInvertedIndexError, lambda: inverted_index.getList("opopomoz"))
+        self.assertRaises(KeywordNotInInvertedIndexError, lambda: inverted_index.getList("zattera"))
+        self.assertRaises(KeywordNotInInvertedIndexError, lambda: inverted_index.getList("pterodattilo"))
         
         occurrence_list = inverted_index.getList("leggibile")
         for key,value in occurrence_list.getData().items():

@@ -55,12 +55,15 @@ class Element:
     
     def addElement(self,webSite,dir,name,content=None):
         """Se l'elemento è già presente il metodo lo restituisce altrimenti prima lo aggiunge all'HashTable e poi lo restituisce"""
-        e = self._HTchildren.get(name)
+        e = self._HTchildren.get(name) #Worst case: O(k)
         if(e == None):
             e = Element(webSite,dir,name,content)
-            self._HTchildren[name] = e
-            self.updateOrder(e)
+            self._HTchildren[name] = e #Worst case: O(k)
+            self.updateOrder(e)   #Worst case: O(log(k))
         return e 
+        #Nel worst case possibile la complessità è O(k)
+
+        
 
 
     def searchInChildren(self,elemName,dir):
@@ -129,12 +132,13 @@ class Element:
     #         return "\n" + l + " "+self.getName()
 
     def getWebSiteStructure(self,l) -> str:
-        """Metodo ricorsivo che restituisce una stringa che rappresenta la struttura del website.
+        """
+            Metodo ricorsivo che restituisce una stringa che rappresenta la struttura del website.
             l'HomeDirectory è caratterizzato dal fatto che è una directory ed ha l = ""
         """
         #if(self == None):
         #    return ""
-        if(self.isDir() and l == ""): #Caso particolare in cui self è l'homeDirectory: 
+        if(self.isDir() and l == ""): #Caso particolare in cui self è l'homeDirectory e quindi anche una directory 
             s = self.getName()
             for (k,v) in self.getOrderedChildren().items():
                 s += v.getWebSiteStructure("---")

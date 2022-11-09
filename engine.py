@@ -19,7 +19,7 @@ class SearchEngine:
         self._websites = ProbeHashMap() # _websites memorizza tutti i website creati affinchè NON vengano istanziati più di una volta  
         self._invIndex = InvertedIndex()
         
-        #Per inizializzare le strutture dati 
+        #Per inizializzare le strutture dati con tutti i dati 
         for file in os.scandir(namedir):    
             if not file.is_file() or file.name.startswith('.'):
                 continue
@@ -57,7 +57,7 @@ class SearchEngine:
            per ognuna di queste k pagine, sono ordinate in ordine decrescente di occorrenze, 
            la stringa del website del sito che hosta la pagina è aggiunta a s, a meno che il website non sia stato già inserito.  
         """
-        matchedWords = self._invIndex.getList(keyword) #Restituisce un HT
+        matchedWords = self._invIndex.getList(keyword) #Restituisce un OccurenceList, cioè una mappa implementata come Hash Table
 
         ### v1
         #array = []
@@ -67,7 +67,7 @@ class SearchEngine:
         ###DEBUG:
         #print("Keyword: ", keyword, "k: ",k)
 
-        for item in matchedWords._data.items(): #Per ogni coppia chiave-valore del RBTree
+        for item in matchedWords._data.items(): #Per ogni coppia chiave-valore dell'Hash Table dell'OccurenceList
             ### v1
             #array.append((item[1].getNum(),item[1].getPage().getWebSite()))
 

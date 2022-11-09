@@ -1,10 +1,11 @@
 from dataStructure.hash_table.probe_hash_map import ProbeHashMap
-from dataStructure.trie.standardTrie import StandardTrie
+from webSite import NotAnElementError
+from element import Element
 class KeywordNotInInvertedIndexError(Exception):
     pass
 
 class OLItem:
-    """La classe OLItem rappresenta ciò che viene memorizzato nell'Occurence List."""
+    """La classe OLItem rappresentano i valori delle chiavi dell'Occurence List."""
     __slots__ = '_page','num'
     def __init__(self,page,num):
         self._page=page
@@ -20,7 +21,7 @@ class OLItem:
 class OccurenceList:
     """ 
         La classe OccurenceList è basata su una mappa.
-        La chiave è il riferimento (convertito in stringa) alla WebPage mentre il valore è il numero di occorrenze della keyword all'interno 
+        La chiave è il riferimento alla WebPage mentre il valore è un oggetto che contiene la WebPage e il numero di occorrenze della keyword all'interno 
         della WebPage (il cui riferimento è utilizzato come chiave)
     """
     __slots__ = '_data'
@@ -28,7 +29,7 @@ class OccurenceList:
     def __init__(self):
         self._data = ProbeHashMap()
 
-    def add(self,page):
+    def add(self,page): #Complessità ammortizzata: O(1)
         """
             Il metodo add aggiunge la WebPage nell'Occurence List ed aggiorna il numero di occorrenze.
         """
@@ -91,23 +92,29 @@ class InvertedIndex:
 
     __slots__ = '_InvertedIndex'
 
-    def __init__(self):
+    def __init__(self): #O(1)
         """È il costruttore della classe InvertedIndex. Instanzia un nuovo oggetto InvertedIndex"""
 
-        self._InvertedIndex = ProbeHashMap(cap=2000) #Il cap è fissato a 2000 perchè mi aspetto che si siano molte parole nel dataset
+        self._InvertedIndex = ProbeHashMap(cap=2000) #Il cap è fissato a 2000 perchè si suppone che si siano molte parole nel dataset
 
-    def addWord(self, keyword):
+    def addWord(self, keyword): #Complessità ammortizzata: O(1)
         """Il metodo addWord aggiunge la stringa keyword all'interno della struttura dati InvertedIndex"""
-        self._InvertedIndex[keyword] = OccurenceList()
+        o = self._InvertedIndex.get(keyword) #Complessità ammortizzata: O(1)
+        if (o == None):
+            self._InvertedIndex[keyword] = OccurenceList() #Complessità ammortizzata: O(1)
 
-    def addPage(self, page):
+    def addPage(self, page): #Per ogni parola della WebPage la complessità ammortizzata è O(1)
         """ 
             Il metodo addPage prende come parametro di input un oggetto della classe Element che sia una WebPage.
             Per ogni parola del contenuto della WebPage, se la parola non è presente nell'InvertedIndex essa viene aggiunta e la WebPage viene inserita nell'OccurrenceList.
             Il metodo addPage si occupa anche di aggiornare il numero di occorrenze della parola trovate nella pagina.
         """
-
-        words = page.getContent().split() #Complessità è O(n = lunghezza testo pagina)
+        if not isinstance(page,Element):
+            raise NotAnElementError("elem is not an Element")
+        if(not page.isWebPage()):
+            raise Exception("The parameter is not a WebPage")
+        
+        words = page.getContent().split() 
         for w in words:
 
             ### v1
@@ -115,17 +122,22 @@ class InvertedIndex:
             #    self.addWord(w)
             #self._InvertedIndex[w].add(page)
 
-            #Si aggiunge la pagina che contiene la parola w all'Occurence List.
-            #Se w è una keyword che non è mai stata inserita prima in _InvertedIndex, deve essere prima inserita e poi va aggiunta la pagina.
+            # Si aggiunge la pagina che contiene la parola w all'Occurence List.
+            # Se w è una keyword che non è mai stata inserita prima in _InvertedIndex, si inserisce la keyword e si crea l'OccurenceList associata alla keyword. Infine si aggiunge la pagina di provenienza della keyword all'interno della Occurence List. 
+            # Se invece w è una keyword che è già stata inserita prima, si aggiunge esclusivamente la WebPage all'OccurenceList relativa alla keyword w.
+            # Durante il processo di aggiunta delle WebPage all'OccurenceList si memorizzano anche il numero di occorrenze della keyword all'interno della pagina.
             
             #Versione ottimizzazione per l'accesso alle HashTable
             res = self._InvertedIndex.myGetSetNone(w) #res = (found,valore)
-            if not res[0]: #Se found è true, il valore è un item
+            if not res[0]: #Se found è True, 'valore' è un _Item
                 o = OccurenceList()
-                self._InvertedIndex.mySet(res[1],o)  #Vado ad inserire l'OccurenceList appena creata
+                self._InvertedIndex.mySet(res[1],o)  #Vado ad inserire l'OccurenceList appena creata nell'_Item appena restituito.
                 o.add(page)
-            else: #Se found è false, il valore è un OccurenceList
+            else: #Se found è False, 'valore' è un OccurenceList
                 res[1].add(page)
+
+            #La add(page) ha complessità ammortizzata O(1)
+
 
             # try:
             #     self._InvertedIndex[w].add(page)
@@ -137,7 +149,7 @@ class InvertedIndex:
             #print("[InvertedIndex: addPage] word:",w," page:",page.getName())
         
 
-    def getList(self, keyword):
+    def getList(self, keyword): #Complessità ammortizzata: O(1)
         """
             Il metodo getList prende in input una stringa, keyword, e restituisce la corrispondente Occurence List. 
             Il metodo getList lancia l'eccezione KeywordNotInInvertedIndexError se non esiste una Occurence List associata alla keyword.

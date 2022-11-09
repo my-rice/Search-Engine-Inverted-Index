@@ -13,11 +13,11 @@ class NotAnElementError(Exception):
 
 class WebSite:
     __slots__ = '_homeDirectory','_homePage'
-    def __init__(self, host):
+    def __init__(self, host): #O(1)
         """È il costruttore della classe WebSite. Crea un nuovo oggetto WebSite per salvare il WebSite dell'host."""
         self._homeDirectory = Element(self,dir=True,name=host)  
         self._homePage = None
-    def __isDir(self, elem):#Worst Case: O(1)
+    def __isDir(self, elem): #O(1)
         """
             Il metodo __isDir prende in input elem, un'istanza della classe Element.
             Se elem è una directory restituisce True altrimenti False.
@@ -27,7 +27,7 @@ class WebSite:
             raise NotAnElementError("elem is not an Element")
         return elem.isDir()
 
-    def __isPage(self, elem): #Worst Case: O(1)
+    def __isPage(self, elem): #O(1)
         """
             Il metodo __isPage prende in input elem, un'istanza della classe Element.
             Se elem è una WebPage restituisce True altrimenti False.
@@ -37,14 +37,15 @@ class WebSite:
             raise NotAnElementError("elem is not an Element")
         return elem.isWebPage()
 
-    def __hasDir(self, ndir, cdir): #Worst Case: O(log(k))
+    def __hasDir(self, ndir, cdir): #O(log(k)). La ricerca viene effettuata nella struttura dati ordinata. La complessità computazionale per la ricerca nella struttura dati ordinata è sempre O(log(k)), in cui k è il numero di elementi contenuti nella directory cdir.
         """
             Il metodo __hasDir prende in input due parametri: una stringa chiamata ndir e un oggetto Element, che deve essere una directory, chiamato cdir.
             Se all'interno di cdir è presente una directory il cui nome è ndir allora il metodo restituisce la directory trovata in cdir.
             Se la directory il cui nome è ndir non esiste viene lanciata l'eccezione DirectoryNotFoundError.
-            Se cdir non è una directory il metodo lancia l'eccezione NotADirectoryError.  
+            Se cdir non è una directory il metodo lancia l'eccezione NotADirectoryError.
+            Se ndir non è una stringa viene lanciata un'eccezione.  
         """
-        
+        #isDir si assicura che cdir sia un oggetto della classe Element
         if(not self.__isDir(cdir)):
             raise NotADirectoryError(cdir,"is not a directory")
 
@@ -55,14 +56,15 @@ class WebSite:
         except:
             raise Exception("An error occurred in __hasDir method")
 
-    def __hasPage(self, npag, cdir): #Worst Case: O(log(k))
+    def __hasPage(self, npag, cdir): #O(log(k)). La ricerca viene effettuata nella struttura dati ordinata. La complessità computazionale per la ricerca nella struttura dati ordinata è sempre O(log(k)), in cui k è il numero di elementi contenuti nella directory cdir.
         """
             Il metodo __hasPage prende in input due parametri: una stringa chiamata npag e un oggetto Element, che deve essere una directory, chiamato cdir.
             Se all'interno di cdir è presente una WebPage il cui nome è npag allora il metodo restituisce un riferimento ad essa.
             Se la WebPage chiamata npag non esiste viene lanciata l'eccezione PageNotFoundError.
-            Se cdir non è una directory il metodo lancia l'eccezione NotADirectoryError.  
+            Se cdir non è una directory il metodo lancia l'eccezione NotADirectoryError.
+            Se npag non è una stringa viene lanciata un'eccezione.  
         """
-        
+        #isDir si assicura che cdir sia un oggetto della classe Element
         if(not self.__isDir(cdir)):
             raise NotADirectoryError(cdir,"is not a directory")
 
@@ -74,7 +76,7 @@ class WebSite:
             raise Exception("An error occurred in __hasPage method")
    
             
-    def __newDir(self, ndir, cdir):
+    def __newDir(self, ndir, cdir): #Worst case: O(k). In cui k è il numero di WebPage o directory contenute nella directory cdir.
         """
             Il metodo __newDir prende in input due parametri: una stringa chiamata ndir e un oggetto Element, che deve essere una directory, chiamato cdir.
             Se all'interno di cdir è presente una directory il cui nome è ndir allora il metodo restituisce un riferimento alla directory trovata in cdir.
@@ -87,7 +89,7 @@ class WebSite:
         return e        
 
 
-    def __newPage(self, npag, cdir):
+    def __newPage(self, npag, cdir): #Worst case: O(k). In cui k è il numero di WebPage o directory contenute nella directory cdir.
         """
             Il metodo __newPage prende in input due parametri: una stringa chiamata npag e un oggetto Element, che deve essere una directory, chiamato cdir.
             Se all'interno di cdir è presente una WebPage il cui nome è npag allora il metodo restituisce un riferimento alla WebPage trovata in cdir.
@@ -96,10 +98,10 @@ class WebSite:
         """
         if(not self.__isDir(cdir)):
             raise NotADirectoryError(cdir,"is not a directory")
-        e = cdir.addElement(self,dir=False,name=npag,content="") #O(log(k))
+        e = cdir.addElement(self,dir=False,name=npag,content="") #O(k) nel worst case
         return e
 
-    def getHomePage(self): ###O(1)
+    def getHomePage(self): #O(1)
         """ 
             Il metodo getHomePage restituisce l'home page del WebSite al quale l'oggetto corrente si riferisce oppure lancia un'eccezione se l'Homepage non esiste.
             L'homepage è una webpage speciale chiamata index.html contenuta nella home directory.
@@ -117,7 +119,7 @@ class WebSite:
         return self._homeDirectory.getWebSiteStructure("")
 
 
-    def insertPage(self, url, content): #Worst Case: O(l*k)
+    def insertPage(self, url, content): #Worst Case: O(l*k). Nel Worst Case la complessità della ricerca di un elemento in una Hash Table è O(k), in cui k è il numero di elementi contenuti nella directory. La ricerca va fatta l volte, cioè una volta per ogni parent directory della WebPage da inserire. 
         """ 
             Il metodo insertPage salva e restituisce una nuova pagina del WebSite.
             Il parametro URL è una stringa che rappresenta l'URL della WebPage; il parametro content, invece, è una stringa che rappresenta il testo della WebPage.
@@ -146,7 +148,7 @@ class WebSite:
         if not isinstance(page,Element):
             raise NotAnElementError("page is not an Element")
         
-        if(not page.isWebPage(page)):
+        if(not page.isWebPage()):
             raise Exception("The parameter is not a WebPage")
         return page.getWebSite()
 

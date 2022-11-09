@@ -98,28 +98,3 @@ adeguano oblii digradano scolorano scardino eccitiamo digrada snoderei scalavate
         #self.assertEqual(s1,check1)
         self.assertEqual(s2,check2)
     
-    def test_get_list(self):
-        return
-        w = WebSite("www.unisa.it")
-        p = []
-        p.append(w.insertPage("www.unisa.it/test/index.html",TestInvertedIndex.lorem_ipsum1))
-        p.append(w.insertPage("www.unisa.it/1zz.html",TestInvertedIndex.lorem_ipsum2))
-        p.append(w.insertPage("www.unisa.it/diem/profs/auletta.html",TestInvertedIndex.lorem_ipsum3))
-        p.append(w.insertPage("www.unisa.it/diem/profs/vinci.html",TestInvertedIndex.lorem_ipsum1))
-        p.append(w.insertPage("www.unisa.it/index.html",TestInvertedIndex.lorem_ipsum2))
-        p.append(w.insertPage("www.unisa.it/diem/profs/ferraioli.html",TestInvertedIndex.lorem_ipsum3))
-        p.append(w.insertPage("www.unisa.it/diem/daa.html",TestInvertedIndex.lorem_ipsum1))
-        p.append(w.insertPage("www.unisa.it/AAAA.html",TestInvertedIndex.lorem_ipsum2))
-        p.append(w.insertPage("www.unisa.it/aaa.html",TestInvertedIndex.lorem_ipsum3))
-        
-        inverted_index = InvertedIndex()
-        for page in p:
-            inverted_index.addPage(page)
-            
-        self.assertRaises(Exception, lambda: inverted_index.getList("opopomoz"))
-        self.assertRaises(Exception, lambda: inverted_index.getList("zattera"))
-        self.assertRaises(Exception, lambda: inverted_index.getList("pterodattilo"))
-        
-        occurrence_list = inverted_index.getList("leggibile")
-        for key,value in occurrence_list.getData().items():
-            self.assertEqual(value.getNum(),26)
