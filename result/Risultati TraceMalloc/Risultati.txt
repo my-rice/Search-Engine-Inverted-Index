@@ -1,0 +1,52 @@
+### Risultato Tracemalloc esecuzione InvertedIndex con ProbeHashMap 
+
+Top 10 lines
+#1: hash_table\probe_hash_map.py:38: 9732.5 KiB
+    self._table[s] = self._Item(k,v)               # insert new item
+#2: RISI DAVIDE DAA_midterm_project\invertedIndex.py:43: 8226.2 KiB
+    item = OLItem(page,1)
+#3: hash_table\hash_map_base.py:17: 7497.9 KiB
+    self._table = cap * [ None ]
+#4: RISI DAVIDE DAA_midterm_project\invertedIndex.py:31: 6303.1 KiB
+    self._data = ProbeHashMap()
+#5: RISI DAVIDE DAA_midterm_project\engine.py:28: 5622.3 KiB
+    content = fp.read()
+#6: RISI DAVIDE DAA_midterm_project\invertedIndex.py:37: 5484.2 KiB
+    key = id(page)
+#7: RISI DAVIDE DAA_midterm_project\invertedIndex.py:96: 3222.5 KiB
+    words = page.getContent().split()
+#8: RISI DAVIDE DAA_midterm_project\invertedIndex.py:102: 2250.4 KiB
+    o = OccurenceList()
+#9: hash_table\hash_map_base.py:47: 1958.7 KiB
+    self._table = c * [None]       # then reset table to desired capacity
+#10: hash_table\hash_map_base.py:20: 1801.9 KiB
+    self._scale = 1 + randrange(p-1)              # scale from 1 to p-1 for MAD
+28 other: 2835.7 KiB
+Total allocated size: 54935.4 KiB
+
+
+### Risultato Tracemalloc esecuzione InvertedIndex con ProbeHashMap 
+
+Top 10 lines
+#1: hash_table\hash_map_base.py:17: 92816.2 KiB
+    self._table = cap * [ None ]
+#2: trie\standardTrie.py:8: 18027.9 KiB
+    self.children = ProbeHashMap(59) #Le lettere dell'alfabeto sono 26. Il load factor è 0.5. Posso partire con un bucket array di questa dimensione.
+#3: hash_table\probe_hash_map.py:38: 13563.6 KiB
+    self._table[s] = self._Item(k,v)               # insert new item
+#4: trie\standardTrie.py:34: 9013.0 KiB
+    x = Node(letter)
+#5: hash_table\hash_map_base.py:20: 6952.2 KiB
+    self._scale = 1 + randrange(p-1)              # scale from 1 to p-1 for MAD
+#6: RISI DAVIDE DAA_midterm_project\invertedIndex.py:32: 6301.5 KiB
+    self._data = ProbeHashMap()
+#7: RISI DAVIDE DAA_midterm_project\invertedIndex.py:44: 5831.2 KiB
+    item = OLItem(page,1)
+#8: RISI DAVIDE DAA_midterm_project\engine.py:28: 5622.3 KiB
+    content = fp.read()
+#9: Lib\random.py:240: 4956.2 KiB
+    r = getrandbits(k)  # 0 <= r < 2**k
+#10: RISI DAVIDE DAA_midterm_project\invertedIndex.py:38: 3887.5 KiB
+    key = id(page)
+26 other: 3861.7 KiB
+Total allocated size: 170833.4 KiB
