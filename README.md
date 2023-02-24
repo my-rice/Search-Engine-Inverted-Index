@@ -12,7 +12,7 @@ A special webpage is the page index.html contained in the home directory, that i
 homepage.
 You need to implement a class Element modeling either directories or webpages and a class 
 WebSite that saves a website and it has the following interface:
-● WebSite(host): it creates a new WebSite object for saving the website hosted at host, :-
+● WebSite(host): it creates a new WebSite object for saving the website hosted at host, <br>
 where host is a string;
 ● getHomePage(): it returns the home page of the website at which the current object 
 refers or it throws an exception if an home page does not exist;
