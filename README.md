@@ -1,5 +1,5 @@
-DAA_midterm_project
-
+### DAA_midterm_project
+# FIRST PART
 1) We need a data structure to organizes websites, where a website is defined by a structured 
 collection of webpages that reside at the same host: e.g., www.unisa.it/index.html and 
 www.unisa.it/diem/daa.html are pages of the same website, since they are on the same host 
@@ -12,11 +12,11 @@ A special webpage is the page index.html contained in the home directory, that i
 homepage.
 You need to implement a class Element modeling either directories or webpages and a class 
 WebSite that saves a website and it has the following interface: <br>
-● WebSite(host): it creates a new WebSite object for saving the website hosted at host, 
+  ● WebSite(host): it creates a new WebSite object for saving the website hosted at host, 
 where host is a string; <br>
-● getHomePage(): it returns the home page of the website at which the current object 
+  ● getHomePage(): it returns the home page of the website at which the current object 
 refers or it throws an exception if an home page does not exist; <br>
-● getSiteString(): it returns a string showing the structure of the website. The string must 
+  ● getSiteString(): it returns a string showing the structure of the website. The string must 
 be formatted as follows: in the first line there must be the hostname at which the site 
 is hosted; each page or directory contained in the root directory will appear in a new 
 line preceded by “--- “ (three dashes and a space) in alphabetical order (with numbers 
@@ -24,59 +24,60 @@ preceding lowercase letters preceding uppercase letters). For each directory the
 and directories contained therein will appear just after the name of the directory in a 
 new line preceded by a number of dashes = 3 x the number of parent directories, and 
 a space. For example, the following is a valid output: <br>
-www.unisa.it
---- 1zz.html
---- aaa.html
---- diem
------- daa.html
------- profs
---------- auletta.html
---------- ferraioli.html
---------- vinci.html
---- index.html
+www.unisa.it <br>
+--- 1zz.html <br>
+--- aaa.html <br>
+--- diem <br>
+------ daa.html <br>
+------ profs <br>
+--------- auletta.html <br>
+--------- ferraioli.html <br>
+--------- vinci.html <br>
+--- index.html <br>
 --- AAAA.html <br>
-● insertPage(url, content): it saves and returns a new page of the website, where url
+  ● insertPage(url, content): it saves and returns a new page of the website, where url
 is a string representing the URL of the page, and content is a string representing the 
 text contained in the page. <br>
-● getSiteFromPage(page): that given an Element page returns the WebSite object at 
+  ● getSiteFromPage(page): that given an Element page returns the WebSite object at 
 which that page belongs. <br>
 Moreover, the WebSite class must contain the following private methods: <br>
-● __hasDir(ndir, cdir): if in the current directory cdir there is a directory whose name is 
+  ● __hasDir(ndir, cdir): if in the current directory cdir there is a directory whose name is 
 ndir, then it returns a reference to this directory, otherwise it throws an exception. An 
 exception must be thrown even if the cdir is not a directory. Here ndir is a string, while 
 cdir and the return value are objects of the class Element; <br>
-● __newDir(ndir, cdir): if in the current directory cdir there is a directory whose name 
+  ● __newDir(ndir, cdir): if in the current directory cdir there is a directory whose name 
 is ndir, then it returns a reference to this directory, otherwise it creates such a directory 
 and returns a reference to it. An exception must be thrown even if the cdir is not a 
 directory. Here ndir is a string, while cdir and the return value are objects of the class 
 Element; <br>
-● __hasPage(npag, cdir): if in the current directory cdir there is a webpage whose 
+  ● __hasPage(npag, cdir): if in the current directory cdir there is a webpage whose 
 name is npage, then it returns a reference to this page, otherwise it throws an 
 exception. An exception must be thrown even if the cdir is not a directory. Here npage
 is a string, while cdir and the return value are objects of the class Element; <br>
-● __newPage(npag, cdir): if in the current directory cdir there is a webpage whose 
+  ● __newPage(npag, cdir): if in the current directory cdir there is a webpage whose 
 name is npage, then it returns a reference to this page, otherwise it creates such a 
 page and returns a reference to it. An exception must be thrown even if the cdir is not 
 a directory. Here ndir is a string, while cdir and the return value are objects of the 
 class Element; <br>
-● __isDir(elem): if the object Element referenced by elem is a directory returns True, 
+  ● __isDir(elem): if the object Element referenced by elem is a directory returns True, 
 otherwise it returns False. The format of elem is not constrained. <br>
-● __isPage(elem): if the object Element referenced by elem is a web page returns True, 
+  ● __isPage(elem): if the object Element referenced by elem is a web page returns True, 
 otherwise it returns False. The format of elem is not constrained.
 Note that public methods defined above may use these private methods, and private methods 
 may re-use other private methods. <br>
 Provide an implementation of the class above so that: <br>
-● WebSite(host), getHomePage(), getSiteFromPage(page), __isDir(elem), and 
+  ● WebSite(host), getHomePage(), getSiteFromPage(page), __isDir(elem), and 
 isPage(elem) take time O(1); <br>
-● getSiteString() takes time O(n), where n is the number of pages and directories of 
+  ● getSiteString() takes time O(n), where n is the number of pages and directories of 
 the website; <br>
-● insertPage(url, content) takes time O(l*k), where l is the number of parent 
+  ● insertPage(url, content) takes time O(l*k), where l is the number of parent 
 directories of the page and k is the number of pages or directories contained in the 
 last already existing directory; <br>
-● __hasDir(ndir, cdir) and __hasPage(npag, cdir) take time O(log k), where k is the 
+  ● __hasDir(ndir, cdir) and __hasPage(npag, cdir) take time O(log k), where k is the 
 number of pages or directories contained in cdir; <br>
-● __newDir(ndir, cdir) and __newPage(npag, cdir) take time O(k), where k is the 
+  ● __newDir(ndir, cdir) and __newPage(npag, cdir) take time O(k), where k is the 
 number of pages or directories contained in cdir. <br>
+# SECOND PART
 2) We have to implement a simplified model of a search engine, that allows users to retrieve 
 relevant information from the collected Web Pages, by identifying pages containing a given 
 keyword. <br>
@@ -93,29 +94,30 @@ only a reference to occurrence lists, and the occurrence lists stored as separat
 The first data structure (the inverted index) must allow for efficient word-matching queries (i.e., 
 to find the given keyword, and to return the corresponding occurrence list).
 Specifically, consider the class InvertedIndex with the following interface: <br>
-● InvertedIndex(): it creates a new empty InvertedIndex;<br>
-● addWord(keyword): it adds the string keyword into the InvertedIndex;<br>
-● addPage(page): it processes the Element page, and for each word in its content, this 
+  ● InvertedIndex(): it creates a new empty InvertedIndex;<br>
+  ● addWord(keyword): it adds the string keyword into the InvertedIndex;<br>
+  ● addPage(page): it processes the Element page, and for each word in its content, this 
 word is inserted in the inverted index if it is not present, and the page is inserted in the 
 occurrence list of this word. The occurrence lists also saves the number of occurrences 
 of the word in the page.<br>
-● getList(keyword): it takes in input the string keyword, and it returns the 
+  ● getList(keyword): it takes in input the string keyword, and it returns the 
 corresponding occurrence list. It throws an Exception if there is no occurrence list 
 associated with the string keyword. <br>
 Provide an implementation of this class so that:
-● InvertedIndex() takes time O(1); <br>
-● addWord(keyword) and getList(keyword) have amortized and expected complexity 
+  ● InvertedIndex() takes time O(1); <br>
+  ● addWord(keyword) and getList(keyword) have amortized and expected complexity 
 O(len(keyword));<br>
-● addPage(page) has amortized and expected complexity O(len(word) + log 
+  ● addPage(page) has amortized and expected complexity O(len(word) + log 
 list(word)) for each word in the content of the page, where list(word) is the number 
 of pages in the occurrence list of word. <br>
+# THIRD PART
 3) Implement a class SearchEngine with the following methods: <br>
-● SearchEngine(namedir): that initializes the SearchEngine, by taking in input a 
+  ● SearchEngine(namedir): that initializes the SearchEngine, by taking in input a 
 directory in which there are multiple files each representing a different webpage. Each 
 file contains in the first line the URL (including the hostname) and in the next lines the 
 content of the webpage. This function populates the database of the search engine, 
 by initializing and inserting values in all the necessary data structures. <br>
-● search(keyword, k): it searches the k web pages with the maximum number of 
+  ● search(keyword, k): it searches the k web pages with the maximum number of 
 occurrences of the searched keyword. It returns a string s built as follows: for each of 
 these k pages sorted in descending order of occurrences, the site strings (as defined 
 above) of the site hosting that page is added to s, unless this site has been already 
